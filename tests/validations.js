@@ -89,5 +89,44 @@
                 trust( valid_done, invalid_in, valid_out );
             }, /in_options: path doesn't start with \// );
         } );
+
+        it( 'Should not be valid with body and get method', function() {
+            var invalid_in = _.clone( valid_in );
+            invalid_in.body = {};
+
+            assert.throws( function() {
+                trust( valid_done, invalid_in, valid_out );
+            }, /in_options: should not contain body if method is get or delete/ );
+        } );
+
+        it( 'Should not be valid with body and delete method', function() {
+            var invalid_in = _.clone( valid_in );
+            invalid_in.body = {};
+            invalid_in.method = 'delete';
+
+            assert.throws( function() {
+                trust( valid_done, invalid_in, valid_out );
+            }, /in_options: should not contain body if method is get or delete/ );
+        } );
+
+        it( 'Should be valid with body and put method', function() {
+            var valid_in_put = _.clone( valid_in );
+            valid_in_put.body = {};
+            valid_in_put.method = 'put';
+
+            assert.doesNotThrow( function() {
+                trust( valid_done, valid_in_put, valid_out );
+            }, /in_options: should not contain body if method is get or delete/ );
+        } );
+
+        it( 'Should be valid with body and post method', function() {
+            var valid_in_put = _.clone( valid_in );
+            valid_in_put.body = {};
+            valid_in_put.method = 'post';
+
+            assert.doesNotThrow( function() {
+                trust( valid_done, valid_in_put, valid_out );
+            }, /in_options: should not contain body if method is get or delete/ );
+        } );
     } );
 }) ();
