@@ -8,7 +8,7 @@
 
     var server = null;
 
-    module.exports.start = function _start( port ) {
+    module.exports.start = function _start() {
         var deferred = q.defer(),
             app = express();
 
@@ -16,11 +16,11 @@
             res.send( { test: 'test' } );
         } );
 
-        server = app.listen( port, function() {
-            deferred.resolve( server );
+        server = app.listen( function() {
+            deferred.resolve( server.address().port );
         } );
 
-        return deferred;
+        return deferred.promise;
     };
 
     module.exports.stop = function _stop() {
