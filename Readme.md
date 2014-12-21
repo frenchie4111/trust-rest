@@ -1,0 +1,1 @@
+# trust [![Build Status](https://travis-ci.org/frenchie4111/trust.svg?branch=master)](https://travis-ci.org/frenchie4111/trust)
