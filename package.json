@@ -1,0 +1,19 @@
+{
+  "name": "trust",
+  "version": "0.0.1",
+  "description": "REST Api testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frenchie4111/trust.git"
+  },
+  "author": "Michael Lyons <mdl0394@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frenchie4111/trust/issues"
+  },
+  "homepage": "https://github.com/frenchie4111/trust"
+}
