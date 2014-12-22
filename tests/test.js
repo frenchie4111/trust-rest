@@ -21,6 +21,8 @@
         } );
 
         it( 'Should work when valid', function( done ) {
+            helper.setResponse( { test: 'test' } );
+
             var completion_handler = function( err ) {
                 assert.isUndefined( err );
                 done();

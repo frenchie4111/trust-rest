@@ -14,6 +14,8 @@
             } );
     };
 
+    module.exports.setResponse = test_server.setResponse;
+
     module.exports.after = function() {
         return test_server.stop();
     };
