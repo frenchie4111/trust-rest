@@ -275,10 +275,10 @@
                     path: '/test',
                     method: 'get'
                 }, {
+                    code: 200,
                     content_type: /json/,
                     body: {
                         test: {
-                            code: 200,
                             required: false,
                             value: 'test'
                         }
