@@ -24,7 +24,8 @@
             body: {
                 test: {
                     required: true,
-                    value: 'test'
+                    value: 'test',
+                    type: 'string'
                 }
             },
             headers: {
@@ -159,6 +160,15 @@
                     trust( valid_request_options, valid_response_options_code, valid_done );
                 }, /response_options: code not a valid http response code/ );
             } );
+        } );
+
+        it( 'Should not be valid when body type and value type do not match', function() {
+            var invalid_response_options = _.clone( valid_response_options );
+            invalid_response_options.body.test.type = 'number';
+
+            assert.throws( function() {
+                trust( valid_request_options, invalid_response_options, valid_done );
+            }, /response_options: body expected value should be same as expected type/ );
         } );
 
     } );
