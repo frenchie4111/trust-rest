@@ -29,7 +29,7 @@
             };
 
             assert.doesNotThrow( function() {
-                trust( completion_handler, {
+                trust( {
                     path: '/test',
                     method: 'get'
                 }, {
@@ -42,7 +42,7 @@
                             type: 'string'
                         }
                     }
-                } );
+                }, completion_handler );
             } );
         } );
 
@@ -56,7 +56,7 @@
             };
 
             assert.doesNotThrow( function() {
-                trust( completion_handler, {
+                trust( {
                     path: '/test',
                     method: 'get'
                 }, {
@@ -69,7 +69,7 @@
                             type: 'string'
                         }
                     }
-                } );
+                }, completion_handler );
             } );
         } );
 

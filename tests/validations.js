@@ -38,7 +38,7 @@
             delete invalid_in.method;
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_response_options );
+                trust( invalid_in, valid_response_options, valid_done );
             }, /request_options: method not specified/ );
         } );
 
@@ -47,7 +47,7 @@
             invalid_in.method = 1;
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_response_options );
+                trust( invalid_in, valid_response_options, valid_done );
             }, /request_options: method not a string/ );
         } );
 
@@ -56,7 +56,7 @@
             invalid_in.method = 'NOT CORRECT';
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_response_options );
+                trust( invalid_in, valid_response_options, valid_done );
             }, /request_options: method not valid method/ );
         } );
 
@@ -68,7 +68,7 @@
                 other_method_in.method = other_method;
 
                 assert.doesNotThrow( function() {
-                    trust( valid_done, other_method_in, valid_response_options );
+                    trust( other_method_in, valid_response_options, valid_done );
                 } );
             } );
         } );
@@ -78,7 +78,7 @@
             delete invalid_in.path;
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_response_options );
+                trust( invalid_in, valid_response_options, valid_done );
             }, /request_options: path not specified/ );
         } );
 
@@ -87,7 +87,7 @@
             invalid_in.path = 1;
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_response_options );
+                trust( invalid_in, valid_response_options, valid_done );
             }, /request_options: path not a string/ );
         } );
 
@@ -96,7 +96,7 @@
             invalid_in.path = 'NOT CORRECT';
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_response_options );
+                trust( invalid_in, valid_response_options, valid_done );
             }, /request_options: path doesn't start with \// );
         } );
 
@@ -105,7 +105,7 @@
             invalid_in.body = {};
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_response_options );
+                trust( invalid_in, valid_response_options, valid_done );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
@@ -115,7 +115,7 @@
             invalid_in.method = 'delete';
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_response_options );
+                trust( invalid_in, valid_response_options, valid_done );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
@@ -125,7 +125,7 @@
             valid_in_put.method = 'put';
 
             assert.doesNotThrow( function() {
-                trust( valid_done, valid_in_put, valid_response_options );
+                trust( valid_in_put, valid_response_options, valid_done );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
@@ -135,7 +135,7 @@
             valid_in_put.method = 'post';
 
             assert.doesNotThrow( function() {
-                trust( valid_done, valid_in_put, valid_response_options );
+                trust( valid_in_put, valid_response_options, valid_done );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
@@ -144,7 +144,7 @@
             invalid_response_options.code = 1;
 
             assert.throws( function() {
-                trust( valid_done, valid_request_options, invalid_response_options );
+                trust( valid_request_options, invalid_response_options, valid_done );
             }, /response_options: code not a valid http response code/ );
         } );
 
@@ -156,7 +156,7 @@
                 valid_response_options_code.code = valid_http_code;
 
                 assert.doesNotThrow( function() {
-                    trust( valid_done, valid_request_options, valid_response_options_code );
+                    trust( valid_request_options, valid_response_options_code, valid_done );
                 }, /response_options: code not a valid http response code/ );
             } );
         } );
