@@ -32,7 +32,8 @@
                     body: {
                         test: {
                             required: true,
-                            value: 'test'
+                            value: 'test',
+                            type: 'string'
                         }
                     }
                 } );
