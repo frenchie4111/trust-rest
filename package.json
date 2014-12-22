@@ -25,5 +25,11 @@
     "chai": "^1.10.0",
     "supertest": "^0.15.0",
     "underscore": "^1.7.0"
+  },
+  "config": {
+    "blanket": {
+      "pattern": ["lib"],
+      "data-cover-never": "node_modules"
+    }
   }
 }
