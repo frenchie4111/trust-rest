@@ -47,7 +47,30 @@
         } );
 
         it( 'Should throw when key value is incorrect', function( done ) {
-            done();
+            helper.setResponse( { test: 'incorrect' } );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should have been an error' );
+                assert.match( err.message, /response_validation: incorrect value for key in body/, 'error should have been properly formatted' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( completion_handler, {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test',
+                            type: 'string'
+                        }
+                    }
+                } );
+            } );
         } );
 
         after( function( done ) {
