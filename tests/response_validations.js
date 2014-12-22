@@ -99,6 +99,57 @@
             } );
         } );
 
+        it( 'Should work when value is right type, and no expected_value specified', function( done ) {
+            helper.setResponse( { test: 'incorrect' } );
+
+            var completion_handler = function( err ) {
+                assert.isUndefined( err, 'should not have been an error' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            type: 'string'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
+        it( 'Should assert work when value is wrong type, and no expected_value specified', function( done ) {
+            helper.setResponse( { test: 1 } );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should have been an error' );
+                assert.match( err.message, /response_validation: incorrect type in response body/, 'error should have been properly formatted' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            type: 'string'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
         after( function( done ) {
             helper.after().then( done );
         } );
