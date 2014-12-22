@@ -287,6 +287,32 @@
             } );
         } );
 
+        it( 'Should not work when response content type is not equal', function( done ) {
+            helper.setResponse( { test: 'test' }, 200 );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should have been an error' );
+                assert.match( err.message, /response_validation: content type should match/, 'error should have been properly formatted' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /different/,
+                    body: {
+                        test: {
+                            required: false,
+                            value: 'test'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
         describe( 'Default values in response validation', function() {
 
             it( 'Should default to 200 expected, positive case', function( done ) {
