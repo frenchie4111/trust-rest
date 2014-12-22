@@ -150,6 +150,117 @@
             } );
         } );
 
+        it( 'Should assert when specified required key is not found', function( done ) {
+            helper.setResponse( { test: 'test' } );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should have been an error' );
+                assert.match( err.message, /response_validation: body should contain required key/, 'error should have been properly formatted' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test'
+                        },
+                        another: {
+                            required: true,
+                            value: 'test'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
+
+        it( 'Should not assert when key is not required, and not found', function( done ) {
+            helper.setResponse( { test: 'test' } );
+
+            var completion_handler = function( err ) {
+                assert.isUndefined( err, 'should not have been an error' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test'
+                        },
+                        another: {
+                            required: false,
+                            value: 'test'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
+        it( 'Should assert when unaccounted for key is returned', function( done ) {
+            helper.setResponse( { test: 'test', unaccounted: 'unaccounted' } );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should have been an error' );
+                assert.match( err.message, /response_validation: body should not contain a key not specified in validation body/, 'error should have been properly formatted' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
+        it( 'Should should not require keys when required: false', function( done ) {
+            helper.setResponse( {} );
+
+            var completion_handler = function( err ) {
+                assert.isUndefined( err, 'should not have been an error' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: false,
+                            value: 'test'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
         after( function( done ) {
             helper.after().then( done );
         } );
