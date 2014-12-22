@@ -261,6 +261,32 @@
             } );
         } );
 
+        it( 'Should not work when response code is not equal', function( done ) {
+            helper.setResponse( { test: 'test' }, 404 );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should have been an error' );
+                assert.match( err.message, /response_validation: http response code invalid/, 'error should have been properly formatted' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            code: 200,
+                            required: false,
+                            value: 'test'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
         describe( 'Default values in response validation', function() {
 
             it( 'Should default to 200 expected, positive case', function( done ) {
