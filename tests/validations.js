@@ -19,7 +19,7 @@
             path: '/test'
         };
 
-        var valid_out = {
+        var valid_response_options = {
 
         };
 
@@ -28,7 +28,7 @@
             delete invalid_in.method;
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_out );
+                trust( valid_done, invalid_in, valid_response_options );
             }, /request_options: method not specified/ );
         } );
 
@@ -37,7 +37,7 @@
             invalid_in.method = 1;
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_out );
+                trust( valid_done, invalid_in, valid_response_options );
             }, /request_options: method not a string/ );
         } );
 
@@ -46,7 +46,7 @@
             invalid_in.method = 'NOT CORRECT';
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_out );
+                trust( valid_done, invalid_in, valid_response_options );
             }, /request_options: method not valid method/ );
         } );
 
@@ -58,7 +58,7 @@
                 other_method_in.method = other_method;
 
                 assert.doesNotThrow( function() {
-                    trust( valid_done, other_method_in, valid_out );
+                    trust( valid_done, other_method_in, valid_response_options );
                 } );
             } );
         } );
@@ -68,7 +68,7 @@
             delete invalid_in.path;
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_out );
+                trust( valid_done, invalid_in, valid_response_options );
             }, /request_options: path not specified/ );
         } );
 
@@ -77,7 +77,7 @@
             invalid_in.path = 1;
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_out );
+                trust( valid_done, invalid_in, valid_response_options );
             }, /request_options: path not a string/ );
         } );
 
@@ -86,7 +86,7 @@
             invalid_in.path = 'NOT CORRECT';
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_out );
+                trust( valid_done, invalid_in, valid_response_options );
             }, /request_options: path doesn't start with \// );
         } );
 
@@ -95,7 +95,7 @@
             invalid_in.body = {};
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_out );
+                trust( valid_done, invalid_in, valid_response_options );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
@@ -105,7 +105,7 @@
             invalid_in.method = 'delete';
 
             assert.throws( function() {
-                trust( valid_done, invalid_in, valid_out );
+                trust( valid_done, invalid_in, valid_response_options );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
@@ -115,7 +115,7 @@
             valid_in_put.method = 'put';
 
             assert.doesNotThrow( function() {
-                trust( valid_done, valid_in_put, valid_out );
+                trust( valid_done, valid_in_put, valid_response_options );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
@@ -125,7 +125,7 @@
             valid_in_put.method = 'post';
 
             assert.doesNotThrow( function() {
-                trust( valid_done, valid_in_put, valid_out );
+                trust( valid_done, valid_in_put, valid_response_options );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
     } );
