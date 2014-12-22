@@ -7,16 +7,20 @@
         assert = chai.assert,
         helper = require( './lib/helper' );
 
-    var trust_lib = require( '../' );
+    var trust_lib = require( '../' ),
+        trust = null;
 
-    describe( 'Smoke test', function() {
+    describe( 'Trust functional tests', function() {
         before( function( done ) {
-            helper.before().then( done );
+            helper
+                .before()
+                .then( function() {
+                    trust = trust_lib( 'http://127.0.0.1:' + helper.port );
+                    done();
+                } );
         } );
 
         it( 'Should work when valid', function( done ) {
-            var trust = trust_lib( 'http://127.0.0.1:' + helper.port );
-
             var completion_handler = function( err ) {
                 assert.isUndefined( err );
                 done();
@@ -38,6 +42,10 @@
                     }
                 } );
             } );
+        } );
+
+        it( 'Should throw when key value is incorrect', function( done ) {
+            done();
         } );
 
         after( function( done ) {
