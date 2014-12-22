@@ -20,7 +20,17 @@
         };
 
         var valid_response_options = {
+            code: 200,
+            body: {
+                test: {
+                    required: true,
+                    value: 'test'
+                }
+            },
+            headers: {
 
+            },
+            content_type: /json/
         };
 
         it( 'Should not be valid when no method specified', function() {
@@ -128,5 +138,28 @@
                 trust( valid_done, valid_in_put, valid_response_options );
             }, /request_options: should not contain body if method is get or delete/ );
         } );
+
+        it( 'Should not be valid with invalid http error code', function() {
+            var invalid_response_options = _.clone( valid_response_options );
+            invalid_response_options.code = 1;
+
+            assert.throws( function() {
+                trust( valid_done, valid_request_options, invalid_response_options );
+            }, /response_options: code not a valid http response code/ );
+        } );
+
+        it( 'Should be valid with all valid http codes', function() {
+            var valid_http_codes = [ 100, 101, 200, 201, 202, 203, 204, 205, 206, 207, 300, 301, 302, 303, 304, 305, 307, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 500, 501, 502, 503, 504, 505 ];
+
+            _.each( valid_http_codes, function( valid_http_code ) {
+                var valid_response_options_code = _.clone( valid_response_options );
+                valid_response_options_code.code = valid_http_code;
+
+                assert.doesNotThrow( function() {
+                    trust( valid_done, valid_request_options, valid_response_options_code );
+                }, /response_options: code not a valid http response code/ );
+            } );
+        } );
+
     } );
 }) ();
