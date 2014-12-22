@@ -73,6 +73,32 @@
             } );
         } );
 
+        it( 'Should throw when value is not strict equal', function( done ) {
+            helper.setResponse( { test: 1 } );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should have been an error' );
+                assert.match( err.message, /response_validation: incorrect value for key in body/, 'error should have been properly formatted' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: '1'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
         after( function( done ) {
             helper.after().then( done );
         } );
