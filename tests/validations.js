@@ -14,7 +14,7 @@
 
         };
 
-        var valid_in = {
+        var valid_request_options = {
             method: 'get',
             path: '/test'
         };
@@ -24,37 +24,37 @@
         };
 
         it( 'Should not be valid when no method specified', function() {
-            var invalid_in = _.clone( valid_in );
+            var invalid_in = _.clone( valid_request_options );
             delete invalid_in.method;
 
             assert.throws( function() {
                 trust( valid_done, invalid_in, valid_out );
-            }, /in_options: method not specified/ );
+            }, /request_options: method not specified/ );
         } );
 
         it( 'Should not be valid when no method is not a string', function() {
-            var invalid_in = _.clone( valid_in );
+            var invalid_in = _.clone( valid_request_options );
             invalid_in.method = 1;
 
             assert.throws( function() {
                 trust( valid_done, invalid_in, valid_out );
-            }, /in_options: method not a string/ );
+            }, /request_options: method not a string/ );
         } );
 
         it( 'Should not be valid when method is not in valid methods list', function() {
-            var invalid_in = _.clone( valid_in );
+            var invalid_in = _.clone( valid_request_options );
             invalid_in.method = 'NOT CORRECT';
 
             assert.throws( function() {
                 trust( valid_done, invalid_in, valid_out );
-            }, /in_options: method not valid method/ );
+            }, /request_options: method not valid method/ );
         } );
 
         it( 'Should work with all valid methods', function() {
             var other_methods = [ 'get', 'put', 'post', 'delete' ];
 
             _.each( other_methods, function( other_method ) {
-                var other_method_in = _.clone( valid_in );
+                var other_method_in = _.clone( valid_request_options );
                 other_method_in.method = other_method;
 
                 assert.doesNotThrow( function() {
@@ -64,69 +64,69 @@
         } );
 
         it( 'Should not be valid when no path specified', function() {
-            var invalid_in = _.clone( valid_in );
+            var invalid_in = _.clone( valid_request_options );
             delete invalid_in.path;
 
             assert.throws( function() {
                 trust( valid_done, invalid_in, valid_out );
-            }, /in_options: path not specified/ );
+            }, /request_options: path not specified/ );
         } );
 
         it( 'Should not be valid when no path is not a string', function() {
-            var invalid_in = _.clone( valid_in );
+            var invalid_in = _.clone( valid_request_options );
             invalid_in.path = 1;
 
             assert.throws( function() {
                 trust( valid_done, invalid_in, valid_out );
-            }, /in_options: path not a string/ );
+            }, /request_options: path not a string/ );
         } );
 
         it( 'Should not be valid when path does not start with /', function() {
-            var invalid_in = _.clone( valid_in );
+            var invalid_in = _.clone( valid_request_options );
             invalid_in.path = 'NOT CORRECT';
 
             assert.throws( function() {
                 trust( valid_done, invalid_in, valid_out );
-            }, /in_options: path doesn't start with \// );
+            }, /request_options: path doesn't start with \// );
         } );
 
         it( 'Should not be valid with body and get method', function() {
-            var invalid_in = _.clone( valid_in );
+            var invalid_in = _.clone( valid_request_options );
             invalid_in.body = {};
 
             assert.throws( function() {
                 trust( valid_done, invalid_in, valid_out );
-            }, /in_options: should not contain body if method is get or delete/ );
+            }, /request_options: should not contain body if method is get or delete/ );
         } );
 
         it( 'Should not be valid with body and delete method', function() {
-            var invalid_in = _.clone( valid_in );
+            var invalid_in = _.clone( valid_request_options );
             invalid_in.body = {};
             invalid_in.method = 'delete';
 
             assert.throws( function() {
                 trust( valid_done, invalid_in, valid_out );
-            }, /in_options: should not contain body if method is get or delete/ );
+            }, /request_options: should not contain body if method is get or delete/ );
         } );
 
         it( 'Should be valid with body and put method', function() {
-            var valid_in_put = _.clone( valid_in );
+            var valid_in_put = _.clone( valid_request_options );
             valid_in_put.body = {};
             valid_in_put.method = 'put';
 
             assert.doesNotThrow( function() {
                 trust( valid_done, valid_in_put, valid_out );
-            }, /in_options: should not contain body if method is get or delete/ );
+            }, /request_options: should not contain body if method is get or delete/ );
         } );
 
         it( 'Should be valid with body and post method', function() {
-            var valid_in_put = _.clone( valid_in );
+            var valid_in_put = _.clone( valid_request_options );
             valid_in_put.body = {};
             valid_in_put.method = 'post';
 
             assert.doesNotThrow( function() {
                 trust( valid_done, valid_in_put, valid_out );
-            }, /in_options: should not contain body if method is get or delete/ );
+            }, /request_options: should not contain body if method is get or delete/ );
         } );
     } );
 }) ();
