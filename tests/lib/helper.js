@@ -8,8 +8,9 @@
     module.exports.before = function() {
         return test_server
             .start()
-            .then( function( port ) {
-                module.exports.port = port;
+            .then( function( server ) {
+                module.exports.port = server.address().port;
+                module.exports.server = server;
             } );
     };
 

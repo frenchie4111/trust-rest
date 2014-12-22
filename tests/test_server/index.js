@@ -6,21 +6,26 @@
     var express = require( 'express' ),
         q = require( 'q' );
 
-    var server = null;
+    var server = null,
+        response_value = { test: 'test' };
 
     module.exports.start = function _start() {
         var deferred = q.defer(),
             app = express();
 
         app.get( '/test', function( req, res ) {
-            res.send( { test: 'test' } );
+            res.send( response_value );
         } );
 
         server = app.listen( function() {
-            deferred.resolve( server.address().port );
+            deferred.resolve( server );
         } );
 
         return deferred.promise;
+    };
+
+    module.exports.setResponse = function( new_response_value ) {
+        response_value = new_response_value;
     };
 
     module.exports.stop = function _stop() {
