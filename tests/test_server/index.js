@@ -7,14 +7,15 @@
         q = require( 'q' );
 
     var server = null,
-        response_value = { test: 'test' };
+        response_value = { test: 'test'},
+        response_status = 200;
 
     module.exports.start = function _start() {
         var deferred = q.defer(),
             app = express();
 
         app.get( '/test', function( req, res ) {
-            res.send( response_value );
+            res.status( response_status ).send( response_value );
         } );
 
         server = app.listen( function() {
@@ -24,8 +25,9 @@
         return deferred.promise;
     };
 
-    module.exports.setResponse = function( new_response_value ) {
+    module.exports.setResponse = function( new_response_value, new_response_status ) {
         response_value = new_response_value;
+        response_status = new_response_status || 200;
     };
 
     module.exports.stop = function _stop() {

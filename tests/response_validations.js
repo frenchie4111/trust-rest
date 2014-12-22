@@ -261,6 +261,60 @@
             } );
         } );
 
+        describe( 'Default values in response validation', function() {
+
+            it( 'Should default to 200 expected, positive case', function( done ) {
+                helper.setResponse( { test: 'test' } );
+
+                var completion_handler = function( err ) {
+                    assert.isUndefined( err, 'should not have been an error' );
+                    done();
+                };
+
+                assert.doesNotThrow( function() {
+                    trust( {
+                        path: '/test',
+                        method: 'get'
+                    }, {
+                        content_type: /json/,
+                        body: {
+                            test: {
+                                required: true,
+                                value: 'test',
+                                type: 'string'
+                            }
+                        }
+                    }, completion_handler );
+                } );
+            } );
+
+            it( 'Should default to 200 expected, negative case', function( done ) {
+                helper.setResponse( { test: 'test' }, 404 );
+
+                var completion_handler = function( err ) {
+                    assert.isDefined( err, 'should have been an error' );
+                    assert.match( err.message, /response_validation: http response code invalid/, 'error should have been properly formatted' );
+                    done();
+                };
+
+                assert.doesNotThrow( function() {
+                    trust( {
+                        path: '/test',
+                        method: 'get'
+                    }, {
+                        content_type: /json/,
+                        body: {
+                            test: {
+                                required: false,
+                                value: 'test'
+                            }
+                        }
+                    }, completion_handler );
+                } );
+            } );
+
+        } );
+
         after( function( done ) {
             helper.after().then( done );
         } );
