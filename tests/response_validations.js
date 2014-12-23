@@ -389,6 +389,55 @@
                 } );
             } );
 
+            it( 'Should default to required: true, positive case', function( done ) {
+                helper.setResponse( { test: 'test' } );
+
+                var completion_handler = function( err ) {
+                    assert.isUndefined( err, 'should not have been an error' );
+                    done();
+                };
+
+                assert.doesNotThrow( function() {
+                    trust( {
+                        path: '/test',
+                        method: 'get'
+                    }, {
+                        code: 200,
+                        content_type: /json/,
+                        body: {
+                            test: {
+                                value: 'test'
+                            }
+                        }
+                    }, completion_handler );
+                } );
+            } );
+
+            it( 'Should default to required: true, negative case', function( done ) {
+                helper.setResponse( { } );
+
+                var completion_handler = function( err ) {
+                    assert.isDefined( err, 'should not have been an error' );
+                    assert.match( err.message, /response_validation: body should contain required key/, 'error should have been properly formatted' );
+                    done();
+                };
+
+                assert.doesNotThrow( function() {
+                    trust( {
+                        path: '/test',
+                        method: 'get'
+                    }, {
+                        code: 200,
+                        content_type: /json/,
+                        body: {
+                            test: {
+                                value: 'test'
+                            }
+                        }
+                    }, completion_handler );
+                } );
+            } );
+
         } );
 
         after( function( done ) {
