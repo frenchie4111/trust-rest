@@ -10,7 +10,7 @@
         response_value = { test: 'test'},
         response_status = 200,
         request_validation_function = function( req ) {},
-        request_validation_failed_handler = function( err ) {};
+        request_validation_completion = function( err ) {};
 
     module.exports.start = function _start() {
         var deferred = q.defer(),
@@ -24,9 +24,11 @@
             try {
                 request_validation_function( req );
             } catch( err ) {
-                request_validation_failed_handler( err );
+                res.send( { test: 'test' } );
+                return request_validation_completion( err );
             }
 
+            request_validation_completion();
             res.send( { test: 'test' } );
         };
         app.get( '/validation', _validateRequest );
@@ -48,7 +50,7 @@
 
     module.exports.setRequestValidationFunction = function( new_request_validation_function, new_request_validation_failed_handler ) {
         request_validation_function = new_request_validation_function;
-        request_validation_failed_handler = new_request_validation_failed_handler;
+        request_validation_completion = new_request_validation_failed_handler;
     };
 
     module.exports.stop = function _stop() {
