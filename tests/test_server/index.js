@@ -4,7 +4,8 @@
 
 (function() {
     var express = require( 'express' ),
-        q = require( 'q' );
+        q = require( 'q' ),
+        body_parser = require( 'body-parser' );
 
     var server = null,
         response_value = { test: 'test'},
@@ -15,6 +16,8 @@
     module.exports.start = function _start() {
         var deferred = q.defer(),
             app = express();
+
+        app.use( body_parser.json() );
 
         app.get( '/test', function( req, res ) {
             res.status( response_status ).send( response_value );

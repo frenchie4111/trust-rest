@@ -120,6 +120,52 @@
             } );
         } );
 
+        it( 'should send post body', function( done ) {
+            var body = { test: 'test' };
+
+            helper.setRequestValidationFunction( function( req ) {
+                assert.isDefined( req.body, 'req body should be defined' );
+                assert.deepEqual( req.body, body, 'body should be equal to sent body' );
+            }, done );
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    method: 'post',
+                    path: '/validation',
+                    body: body
+                }, {
+                    body: {
+                        test: {
+                            value: 'test'
+                        }
+                    }
+                } )
+            } );
+        } );
+
+        it( 'should send put body', function( done ) {
+            var body = { test: 'test' };
+
+            helper.setRequestValidationFunction( function( req ) {
+                assert.isDefined( req.body, 'req body should be defined' );
+                assert.deepEqual( req.body, body, 'body should be equal to sent body' );
+            }, done );
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    method: 'put',
+                    path: '/validation',
+                    body: body
+                }, {
+                    body: {
+                        test: {
+                            value: 'test'
+                        }
+                    }
+                } )
+            } );
+        } );
+
         after( function( done ) {
             helper.after().then( done );
         } );
