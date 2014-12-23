@@ -365,6 +365,30 @@
                 } );
             } );
 
+            it( 'Should default to /json/ expected, positive case', function( done ) {
+                helper.setResponse( { test: 'test' }, 200 );
+
+                var completion_handler = function( err ) {
+                    assert.isUndefined( err, 'should not have been an error' );
+                    done();
+                };
+
+                assert.doesNotThrow( function() {
+                    trust( {
+                        path: '/test',
+                        method: 'get'
+                    }, {
+                        code: 200,
+                        body: {
+                            test: {
+                                required: false,
+                                value: 'test'
+                            }
+                        }
+                    }, completion_handler );
+                } );
+            } );
+
         } );
 
         after( function( done ) {
