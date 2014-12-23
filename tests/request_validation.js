@@ -5,7 +5,8 @@
 (function() {
     var chai = require( 'chai' ),
         assert = chai.assert,
-        helper = require( './lib/helper' );
+        helper = require( './lib/helper' ),
+        _ = require( 'underscore' );
 
     var trust_lib = require( '../' ),
         trust = null;
@@ -156,6 +157,32 @@
                     method: 'put',
                     path: '/validation',
                     body: body
+                }, {
+                    body: {
+                        test: {
+                            value: 'test'
+                        }
+                    }
+                } )
+            } );
+        } );
+
+        it( 'should send headers', function( done ) {
+            var headers = { test: 'test' };
+
+            helper.setRequestValidationFunction( function( req ) {
+                assert.isDefined( req.headers, 'req headers should be defined' );
+
+                _.each( headers, function( value, key ) {
+                    assert.propertyVal( req.headers, key, value, 'req headers should be equal to sent headers' );
+                } );
+            }, done );
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    method: 'put',
+                    path: '/validation',
+                    headers: headers
                 }, {
                     body: {
                         test: {
