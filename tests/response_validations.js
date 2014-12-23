@@ -313,6 +313,77 @@
             } );
         } );
 
+        it( 'Should be able to validate nested objects', function( done ) {
+            helper.setResponse( { test: 'test', nested: { test: 'derp' } } );
+
+            var completion_handler = function( err ) {
+                assert.isUndefined( err );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test',
+                            type: 'string'
+                        },
+                        nested: {
+                            type: 'object',
+                            nested: {
+                                test: {
+                                    required: true,
+                                    value: 'derp'
+                                }
+                            }
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
+        it( 'Should find it invalid when nested key is invalid', function( done ) {
+            helper.setResponse( { test: 'test', nested: { test: 'derp' } } );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should be an error' );
+                assert.match( err.message, /response_validation: incorrect value for key in body/, 'error should match' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test',
+                            type: 'string'
+                        },
+                        nested: {
+                            type: 'object',
+                            nested: {
+                                test: {
+                                    required: true,
+                                    value: 'wrong'
+                                }
+                            }
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
         describe( 'Default values in response validation', function() {
 
             it( 'Should default to 200 expected, positive case', function( done ) {
