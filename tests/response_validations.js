@@ -384,6 +384,130 @@
             } );
         } );
 
+        it( 'Should be able to validate array of objects', function( done ) {
+            helper.setResponse( [ { test: 'test' }, { test: 'test' } ] );
+
+            var completion_handler = function( err ) {
+                assert.isUndefined( err );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    type: 'array',
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test',
+                            type: 'string'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
+        it( 'Should throw in array of objects when one is wrong', function( done ) {
+            helper.setResponse( [ { test: 'test' }, { wrong: 'test' } ] );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err, 'should be an error' );
+                assert.match( err.message, /response_validation: body should not contain a key not specified in validation body/, 'error should match' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    type: 'array',
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test',
+                            type: 'string'
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
+        it( 'Should be able to vaidate nested array', function( done ) {
+            helper.setResponse( { test: 'test', nested: [ { test: 'test' }, { test: 'test' } ] } );
+
+            var completion_handler = function( err ) {
+                assert.isUndefined( err );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test',
+                            type: 'string'
+                        },
+                        nested: {
+                            type: 'array',
+                            nested: {
+                                test: {
+                                    value: 'test'
+                                }
+                            }
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
+        it( 'Should throw when error in nested array', function( done ) {
+            helper.setResponse( { test: 'test', nested: [ { test: 'error' }, { test: 'test' } ] } );
+
+            var completion_handler = function( err ) {
+                assert.isDefined( err );
+                assert.match( err.message, /response_validation: incorrect value for key in body/ );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    path: '/test',
+                    method: 'get'
+                }, {
+                    code: 200,
+                    content_type: /json/,
+                    body: {
+                        test: {
+                            required: true,
+                            value: 'test',
+                            type: 'string'
+                        },
+                        nested: {
+                            type: 'array',
+                            nested: {
+                                test: {
+                                    value: 'test'
+                                }
+                            }
+                        }
+                    }
+                }, completion_handler );
+            } );
+        } );
+
         describe( 'Default values in response validation', function() {
 
             it( 'Should default to 200 expected, positive case', function( done ) {
