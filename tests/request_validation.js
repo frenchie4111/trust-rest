@@ -193,6 +193,36 @@
             } );
         } );
 
+        it( 'Should call after_handler before completion_handler', function( done ) {
+            helper.setResponse( { test: 'test' } );
+
+            var after_handler_called = false;
+
+            var after_handler = function( err, req, complete ) {
+                after_handler_called = true;
+                complete();
+            };
+
+            var compltion_handler = function() {
+                assert.isTrue( after_handler_called, 'after handler should have been called first' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    method: 'get',
+                    path: '/test'
+                }, {
+                    body: {
+                        test: {
+                            value: 'test'
+                        }
+                    },
+                    after_handler: after_handler
+                }, compltion_handler );
+            } );
+        } );
+
         after( function( done ) {
             helper.after().then( done );
         } );
