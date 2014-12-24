@@ -193,7 +193,7 @@
             } );
         } );
 
-        it( 'Should call after_handler before completion_handler', function( done ) {
+        it( 'Should call after_handler before completion_handler when success', function( done ) {
             helper.setResponse( { test: 'test' } );
 
             var after_handler_called = false;
@@ -216,6 +216,37 @@
                     body: {
                         test: {
                             value: 'test'
+                        }
+                    },
+                    after_handler: after_handler
+                }, compltion_handler );
+            } );
+        } );
+
+        it( 'Should call after_handler before completion_handler when failure', function( done ) {
+            helper.setResponse( { test: 'test' } );
+
+            var after_handler_called = false;
+
+            var after_handler = function( err, req, complete ) {
+                after_handler_called = true;
+                complete( err );
+            };
+
+            var compltion_handler = function( err ) {
+                assert.isDefined( err, 'should have been an error' );
+                assert.isTrue( after_handler_called, 'after handler should have been called first' );
+                done();
+            };
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    method: 'get',
+                    path: '/test'
+                }, {
+                    body: {
+                        test: {
+                            value: 'wrong'
                         }
                     },
                     after_handler: after_handler
