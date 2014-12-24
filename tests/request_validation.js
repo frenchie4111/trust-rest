@@ -42,7 +42,7 @@
                             value: 'test'
                         }
                     }
-                } )
+                }, function() {} )
             } );
         } );
 
@@ -67,7 +67,7 @@
                             value: 'test'
                         }
                     }
-                } )
+                }, function() {} )
             } );
         } );
 
@@ -92,7 +92,7 @@
                             value: 'test'
                         }
                     }
-                } )
+                }, function() {} )
             } );
         } );
 
@@ -117,7 +117,7 @@
                             value: 'test'
                         }
                     }
-                } )
+                }, function() {} )
             } );
         } );
 
@@ -140,7 +140,7 @@
                             value: 'test'
                         }
                     }
-                } )
+                }, function() {} )
             } );
         } );
 
@@ -163,7 +163,7 @@
                             value: 'test'
                         }
                     }
-                } )
+                }, function() {} )
             } );
         } );
 
@@ -189,7 +189,7 @@
                             value: 'test'
                         }
                     }
-                } )
+                }, function() {} )
             } );
         } );
 
