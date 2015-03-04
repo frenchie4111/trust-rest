@@ -23,7 +23,11 @@
     "q": "^1.1.2"
   },
   "dependencies": {
+    "blanket": "^1.1.6",
     "chai": "^1.10.0",
+    "coveralls": "^2.11.2",
+    "mocha": "^2.1.0",
+    "mocha-lcov-reporter": "0.0.2",
     "supertest": "^0.15.0",
     "underscore": "^1.7.0"
   },
