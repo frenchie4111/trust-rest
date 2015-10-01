@@ -129,6 +129,16 @@
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
+        it( 'Should be valid with array body and put method', function() {
+            var valid_in_put = _.clone( valid_request_options );
+            valid_in_put.body = [];
+            valid_in_put.method = 'put';
+
+            assert.doesNotThrow( function() {
+                trust( valid_in_put, valid_response_options, valid_done );
+            }, /request_options: should not contain body if method is get or delete/ );
+        } );
+
         it( 'Should be valid with body and post method', function() {
             var valid_in_put = _.clone( valid_request_options );
             valid_in_put.body = {};
