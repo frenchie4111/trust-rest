@@ -34,31 +34,40 @@
             content_type: /json/
         };
 
-        it( 'Should not be valid when no method specified', function() {
+        _throwTest = function( request, response, error_regex, done ) {
+            var trust_done = function( err ) {
+                try {
+                    assert.isNotNull( err );
+                    assert.match( err.message, error_regex, done );
+
+                    done();
+                } catch( e ) {
+                    done( e );
+                }
+            };
+
+            trust( request, response, trust_done );
+        };
+
+        it( 'Should not be valid when no method specified', function( done ) {
             var invalid_in = _.clone( valid_request_options );
             delete invalid_in.method;
 
-            assert.throws( function() {
-                trust( invalid_in, valid_response_options, valid_done );
-            }, /request_options: method not specified/ );
+            _throwTest( invalid_in, valid_response_options, /request_options: method not specified/, done );
         } );
 
-        it( 'Should not be valid when no method is not a string', function() {
+        it( 'Should not be valid when no method is not a string', function( done ) {
             var invalid_in = _.clone( valid_request_options );
             invalid_in.method = 1;
 
-            assert.throws( function() {
-                trust( invalid_in, valid_response_options, valid_done );
-            }, /request_options: method not a string/ );
+            _throwTest( invalid_in, valid_response_options, /request_options: method not a string/, done );
         } );
 
-        it( 'Should not be valid when method is not in valid methods list', function() {
+        it( 'Should not be valid when method is not in valid methods list', function( done ) {
             var invalid_in = _.clone( valid_request_options );
             invalid_in.method = 'NOT CORRECT';
 
-            assert.throws( function() {
-                trust( invalid_in, valid_response_options, valid_done );
-            }, /request_options: method not valid method/ );
+            _throwTest( invalid_in, valid_response_options, /request_options: method not valid method/, done );
         } );
 
         it( 'Should work with all valid methods', function() {
@@ -74,50 +83,40 @@
             } );
         } );
 
-        it( 'Should not be valid when no path specified', function() {
+        it( 'Should not be valid when no path specified', function( done ) {
             var invalid_in = _.clone( valid_request_options );
             delete invalid_in.path;
 
-            assert.throws( function() {
-                trust( invalid_in, valid_response_options, valid_done );
-            }, /request_options: path not specified/ );
+            _throwTest( invalid_in, valid_response_options, /request_options: path not specified/, done );
         } );
 
-        it( 'Should not be valid when no path is not a string', function() {
+        it( 'Should not be valid when no path is not a string', function( done ) {
             var invalid_in = _.clone( valid_request_options );
             invalid_in.path = 1;
 
-            assert.throws( function() {
-                trust( invalid_in, valid_response_options, valid_done );
-            }, /request_options: path not a string/ );
+            _throwTest( invalid_in, valid_response_options, /request_options: path not a string/, done );
         } );
 
-        it( 'Should not be valid when path does not start with /', function() {
+        it( 'Should not be valid when path does not start with /', function( done ) {
             var invalid_in = _.clone( valid_request_options );
             invalid_in.path = 'NOT CORRECT';
 
-            assert.throws( function() {
-                trust( invalid_in, valid_response_options, valid_done );
-            }, /request_options: path doesn't start with \// );
+            _throwTest( invalid_in, valid_response_options, /request_options: path doesn't start with \//, done );
         } );
 
-        it( 'Should not be valid with body and get method', function() {
+        it( 'Should not be valid with body and get method', function( done ) {
             var invalid_in = _.clone( valid_request_options );
             invalid_in.body = {};
 
-            assert.throws( function() {
-                trust( invalid_in, valid_response_options, valid_done );
-            }, /request_options: should not contain body if method is get or delete/ );
+            _throwTest( invalid_in, valid_response_options, /request_options: should not contain body if method is get or delete/, done );
         } );
 
-        it( 'Should not be valid with body and delete method', function() {
+        it( 'Should not be valid with body and delete method', function( done ) {
             var invalid_in = _.clone( valid_request_options );
             invalid_in.body = {};
             invalid_in.method = 'delete';
 
-            assert.throws( function() {
-                trust( invalid_in, valid_response_options, valid_done );
-            }, /request_options: should not contain body if method is get or delete/ );
+            _throwTest( invalid_in, valid_response_options, /request_options: should not contain body if method is get or delete/, done );
         } );
 
         it( 'Should be valid with body and put method', function() {
@@ -140,13 +139,14 @@
             }, /request_options: should not contain body if method is get or delete/ );
         } );
 
-        it( 'Should not be valid with invalid http error code', function() {
-            var invalid_response_options = _.clone( valid_response_options );
-            invalid_response_options.code = 1;
+        it( 'Should be invalid with no body', function() {
+            var invalid_request_options = _.clone( valid_request_options );
+            invalid_request_options.body = null;
+            invalid_request_options.method = 'post';
 
-            assert.throws( function() {
-                trust( valid_request_options, invalid_response_options, valid_done );
-            }, /response_options: code not a valid http response code/ );
+            assert.doesNotThrow( function() {
+                trust( invalid_request_options, valid_response_options, valid_done );
+            }, /request_options: should not contain body if method is get or delete/ );
         } );
 
         it( 'Should be valid with all valid http codes', function() {
@@ -160,15 +160,6 @@
                     trust( valid_request_options, valid_response_options_code, valid_done );
                 }, /response_options: code not a valid http response code/ );
             } );
-        } );
-
-        it( 'Should not be valid when body type and value type do not match', function() {
-            var invalid_response_options = _.clone( valid_response_options );
-            invalid_response_options.body.test.type = 'number';
-
-            assert.throws( function() {
-                trust( valid_request_options, invalid_response_options, valid_done );
-            }, /response_options: body expected value should be same as expected type/ );
         } );
 
     } );
