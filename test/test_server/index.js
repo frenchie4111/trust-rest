@@ -39,6 +39,11 @@
         app.put( '/validation', _validateRequest );
         app.delete( '/validation', _validateRequest );
 
+        var _failRequest = function( req, res ) {
+            res.status( req.params.code ).send( { test: 'test' } );
+        };
+        app.get( '/fail/:code', _failRequest );
+
         server = app.listen( function() {
             deferred.resolve( server );
         } );
