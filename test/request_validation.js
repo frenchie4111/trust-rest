@@ -68,7 +68,10 @@
                         }
                     }
                 } )
-                    .then( done )
+                    .then( function() {
+                        done()
+                    } )
+                    .catch( done );
             } );
         } );
 
@@ -314,7 +317,10 @@
                         }
                     },
                 } )
-                    .then( done )
+                    .then( function() {
+                        done()
+                    } )
+                    .catch( done )
             } );
         } );
 
