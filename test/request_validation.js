@@ -45,6 +45,35 @@
                 }, function() {} )
             } );
         } );
+        
+        it( 'should send get request, promise', function( done ) {
+            helper.setRequestValidationFunction( function( req ) {
+                assert.isDefined( req.route, 'route should be defined' );
+
+                assert.isDefined( req.route.path, 'path should be defined' );
+                assert.strictEqual( req.route.path, '/validation', 'path should be /validation' );
+
+                assert.isDefined( req.route.methods, 'methods should be defined' );
+                assert.propertyVal( req.route.methods, 'get', true,'methods should contain get' );
+            }, function() {} );
+
+            assert.doesNotThrow( function() {
+                trust( {
+                    method: 'get',
+                    path: '/validation'
+                }, {
+                    body: {
+                        test: {
+                            value: 'test'
+                        }
+                    }
+                } )
+                    .then( function() {
+                        done()
+                    } )
+                    .catch( done );
+            } );
+        } );
 
         it( 'should send post request', function( done ) {
             helper.setRequestValidationFunction( function( req ) {
@@ -251,6 +280,47 @@
                     },
                     after_handler: after_handler
                 }, compltion_handler );
+            } );
+        } );
+
+        it( 'Should fail, promise', function( done ) {
+            assert.doesNotThrow( function() {
+                trust( {
+                    method: 'get',
+                    path: '/fail/403'
+                }, {
+                    body: {
+                        test: {
+                            value: 'test'
+                        }
+                    },
+                } )
+                    .then( function() {
+                        done( new Error( 'Shouldnt succeed' ) );
+                    } )
+                    .catch( function() {
+                        done();
+                    } );
+            } );
+        } );
+
+        it( 'Should work when 403', function( done ) {
+            assert.doesNotThrow( function() {
+                trust( {
+                    method: 'get',
+                    path: '/fail/403'
+                }, {
+                    code: 403,
+                    body: {
+                        test: {
+                            value: 'test'
+                        }
+                    },
+                } )
+                    .then( function() {
+                        done()
+                    } )
+                    .catch( done )
             } );
         } );
 
