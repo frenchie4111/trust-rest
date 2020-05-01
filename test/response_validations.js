@@ -51,7 +51,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should have been an error' );
-                assert.match( err.message, /response_validation: incorrect value for key in body/, 'error should have been properly formatted' );
+                assert.match( err.message, /INCORRECT_VALUE/, 'error should have been properly formatted' );
                 done();
             };
 
@@ -78,7 +78,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should have been an error' );
-                assert.match( err.message, /response_validation: incorrect value for key in body/, 'error should have been properly formatted' );
+                assert.match( err.message, /INCORRECT_VALUE/, 'error should have been properly formatted' );
                 done();
             };
 
@@ -129,7 +129,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should have been an error' );
-                assert.match( err.message, /response_validation: incorrect type in response body/, 'error should have been properly formatted' );
+                assert.match( err.message, /INCORRECT_TYPE/, 'error should have been properly formatted' );
                 done();
             };
 
@@ -155,7 +155,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should have been an error' );
-                assert.match( err.message, /response_validation: body should contain required key/, 'error should have been properly formatted' );
+                assert.match( err.message, /MISSING_KEY/, 'error should have been properly formatted' );
                 done();
             };
 
@@ -215,7 +215,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should have been an error' );
-                assert.match( err.message, /response_validation: body should not contain a key not specified in validation body/, 'error should have been properly formatted' );
+                assert.match( err.message, /UNKNOWN_KEY/, 'error should have been properly formatted' );
                 done();
             };
 
@@ -266,7 +266,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should have been an error' );
-                assert.match( err.message, /response_validation: http response code invalid/, 'error should have been properly formatted' );
+                assert.match( err.message, /INVALID_HTTP_CODE/, 'error should have been properly formatted' );
                 done();
             };
 
@@ -292,7 +292,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should have been an error' );
-                assert.match( err.message, /response_validation: content type should match/, 'error should have been properly formatted' );
+                assert.match( err.message, /INCORRECT_CONTENT_TYPE/, 'error should have been properly formatted' );
                 done();
             };
 
@@ -353,7 +353,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should be an error' );
-                assert.match( err.message, /response_validation: incorrect value for key in body/, 'error should match' );
+                assert.match( err.message, /INCORRECT_VALUE/, 'error should match' );
                 done();
             };
 
@@ -416,7 +416,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err, 'should be an error' );
-                assert.match( err.message, /response_validation: body should not contain a key not specified in validation body/, 'error should match' );
+                assert.match( err.message, /UNKNOWN_KEY/, 'error should match' );
                 done();
             };
 
@@ -478,7 +478,7 @@
 
             var completion_handler = function( err ) {
                 assert.isDefined( err );
-                assert.match( err.message, /response_validation: incorrect value for key in body/ );
+                assert.match( err.message, /INCORRECT_VALUE/ );
                 done();
             };
 
@@ -540,7 +540,7 @@
 
                 var completion_handler = function( err ) {
                     assert.isDefined( err, 'should have been an error' );
-                    assert.match( err.message, /response_validation: http response code invalid/, 'error should have been properly formatted' );
+                    assert.match( err.message, /INVALID_HTTP_CODE/, 'error should have been properly formatted' );
                     done();
                 };
 
@@ -613,7 +613,7 @@
 
                 var completion_handler = function( err ) {
                     assert.isDefined( err, 'should not have been an error' );
-                    assert.match( err.message, /response_validation: body should contain required key/, 'error should have been properly formatted' );
+                    assert.match( err.message, /MISSING_KEY/, 'error should have been properly formatted' );
                     done();
                 };
 
